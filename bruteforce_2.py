@@ -1,5 +1,5 @@
 import csv
-from itertools import combinations_with_replacement
+
 
 class Action:
     def __init__(self, name, cost, profit):
@@ -22,7 +22,7 @@ class Combination:
 
 
 file = []
-f = open(r"C:\Users\33676\Desktop\Taff\P7/dataset1_Python+P7.csv")
+f = open(r"C:\Users\33676\Desktop\Taff\P7/dataset1_Python+P7 - Copie (2).csv")
 myReader = csv.reader(f)
 account = 500
 
@@ -41,14 +41,15 @@ def make_actions(myReader):
 
 def combi_valid(actions, account):
     n = len(actions)
-    tab_numb = combinations_with_replacement([0, 1], n)  # O(2^n)
-    combinations = list(tab_numb)
+    tab_numb = [i for i in range(2 ** n)] # O(2^n)
+    tab_binary = [bin(i)[2:] for i in tab_numb] # O(2^n)
+    combinations = ['0' * (n - len(k)) + k for k in tab_binary] # O(2^n)
     combinations_valid = []
     for combination in combinations: # O(2^n)
         cost_combi = 0
         profit_combi = 0
         for p in range(n):
-            if combination[p] == 1:
+            if combination[p] == "1":
                 cost_combi += actions[p].cost
                 profit_combi += actions[p].profit
         if account >= cost_combi:
